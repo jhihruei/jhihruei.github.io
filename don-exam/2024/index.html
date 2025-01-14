@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隨棠烤</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .img-container {
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%;
+            max-height: 500px;
+            width: auto;
+            height: auto;
+        }
+        .input-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .input-container input {
+            width: 100%;
+        }
+        .btn-block {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">隨棠烤</h1>
+        <div class="img-container">
+            <img id="random-image" src="" class="img-fluid" alt="隨機圖片">
+        </div>
+        <div class="input-container">
+            <input type="text" id="name-input" class="form-control mb-3" placeholder="輸入品名">
+            <button id="submit-btn" class="btn btn-primary mb-3 btn-block">送出</button>
+        </div>
+    </div>
+
+    <script>
+        // JSON 數據直接寫在 JavaScript 中
+        const data = {
+            "data": [
+                { "name": "草莓紅茶白蘭地提拉米蘇", "aka": ["草莓小葉紅茶白蘭地提拉米蘇"], "image_url": "./assets/image_001.png" },
+                { "name": "茉莉茉莉", "aka": ["茉莉茉莉3.0"], "image_url": "./assets/image_002.png" },
+                { "name": "茶桃山", "aka": [], "image_url": "./assets/image_003.png" },
+                { "name": "草莓青花椒生巧克力塔", "aka": ["草莓青花椒巧克力塔"], "image_url": "./assets/image_004.png" },
+                { "name": "草莓梔子花烏龍short cake", "aka": ["草莓梔子花烏龍"], "image_url": "./assets/image_005.png" },
+                { "name": "梅酒點心盤", "aka": [], "image_url": "./assets/image_006.png" },
+                { "name": "紅烏龍釀貴妃", "aka": ["紅烏龍釀貴妃2.0"], "image_url": "./assets/image_007.png" },
+                { "name": "紅玉栗子蒙布朗", "aka": [], "image_url": "./assets/image_008.png" },
+                { "name": "花香2.0", "aka": ["花香"], "image_url": "./assets/image_009.png" },
+                { "name": "夏至2.0", "aka": ["夏至"], "image_url": "./assets/image_010.png" },
+                { "name": "梅酒豆腐", "aka": [], "image_url": "./assets/image_011.png" },
+                { "name": "哈荔波特", "aka": ["哈利波特"], "image_url": "./assets/image_012.png" },
+                { "name": "艷夏玉荔", "aka": ["豔夏玉荔", "豔夏玉荔3.0", "艷夏玉荔3.0"], "image_url": "./assets/image_013.png" }
+            ]
+        };
+
+        let remainingItems = [...data.data]; // 剩餘的未顯示圖片項目列表
+
+        const imageElement = document.getElementById('random-image');
+        const inputElement = document.getElementById('name-input');
+        const submitButton = document.getElementById('submit-btn');
+
+        function generateRandomItem() {
+            if (remainingItems.length === 0) {
+                remainingItems = [...data.data]; // 重新填充圖片項目列表
+            }
+            const randomIndex = Math.floor(Math.random() * remainingItems.length);
+            const randomItem = remainingItems.splice(randomIndex, 1)[0]; // 隨機選取並移除該項目
+            imageElement.src = randomItem.image_url;
+            inputElement.dataset.correctName = randomItem.name;
+            inputElement.dataset.aka = JSON.stringify(randomItem.aka);
+            inputElement.value = ''; // 清空輸入欄位
+        }
+
+        function handleSubmission() {
+            const userInput = inputElement.value.trim();
+            if (userInput === '') {
+                return; // 輸入欄位為空時，不進行任何動作
+            }
+
+            const correctName = inputElement.dataset.correctName;
+            const akaList = JSON.parse(inputElement.dataset.aka);
+
+            if (userInput === correctName) {
+                alert(`正確！\n正確名稱是：${correctName}`);
+            } else if (akaList.includes(userInput)) {
+                alert(`別名也正確！\n正確名稱是：${correctName}`);
+            } else {
+                alert(`錯誤！\n正確名稱是：${correctName}\n你的回答是：${userInput}`);
+            }
+
+            // 清空輸入欄位
+            inputElement.value = '';
+            generateRandomItem();
+        }
+
+        generateRandomItem();
+
+        submitButton.addEventListener('click', handleSubmission);
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
