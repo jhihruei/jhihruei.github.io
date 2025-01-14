@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don't Talk in Cafe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+        }
+
+        body.dark-mode {
+            background-color: #333;
+            color: #ccc;
+        }
+
+        body.dark-mode p {
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title" style="display: none;">標題載入中...</h1>
+    <p id="content" style="display: none;">內文載入中...</p>
+
+    <script>
+        // 獲取 Query String 並解析
+        const params = new URLSearchParams(window.location.search);
+        const title = params.get('title');
+        const content = params.get('content');
+        const dark = params.get('dark');
+
+        // 檢查 dark 模式條件
+        if (dark && (dark === '1' || dark.toLowerCase() === 'true')) {
+            document.body.classList.add('dark-mode');
+        }
+
+        // 選取 DOM 元素
+        const titleElement = document.getElementById('title');
+        const contentElement = document.getElementById('content');
+
+        // 根據參數設置內容
+        if (title) {
+            titleElement.textContent = title;
+            titleElement.style.display = 'block';
+        }
+
+        if (content) {
+            contentElement.textContent = content;
+            contentElement.style.display = 'block';
+        }
+
+        if (!title && !content) {
+            contentElement.textContent = '請在網址中加入以下參數進行測試：\n?title=你的標題&content=你的內容&dark=1 (可選: 啟用暗黑模式)';
+            contentElement.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
