@@ -22,6 +22,12 @@
             font-size: 1rem;
         }
 
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
         input[type="number"] {
             width: 100%;
             padding: 10px;
@@ -29,6 +35,23 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
+        }
+
+        .clear-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: #f0f0f0;
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .clear-button:hover {
+            background: #e0e0e0;
         }
 
         .result {
@@ -65,13 +88,21 @@
             input[type="number"] {
                 font-size: 0.9rem;
             }
+
+            .clear-button {
+                font-size: 0.8rem;
+                padding: 3px 8px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <label for="numeric-input">請輸入數字：</label>
-        <input type="number" id="numeric-input" inputmode="numeric" placeholder="輸入數字..." />
+        <div class="input-wrapper">
+            <input type="number" id="numeric-input" inputmode="numeric" pattern="[0-9]*" placeholder="輸入數字..." />
+            <button class="clear-button" id="clear-button">x</button>
+        </div>
 
         <div class="result">
             <div class="result-label">同屬性 Exp：</div>
@@ -87,6 +118,7 @@
     <script>
         const EXTRA_EXP = 213;
         const numericInput = document.getElementById('numeric-input');
+        const clearButton = document.getElementById('clear-button');
         const sameTypeResult = document.getElementById('same-type-result');
         const differentTypeResult = document.getElementById('different-type-result');
 
@@ -103,6 +135,12 @@
                 sameTypeResult.textContent = '-';
                 differentTypeResult.textContent = '-';
             }
+        });
+
+        clearButton.addEventListener('click', () => {
+            numericInput.value = '';
+            sameTypeResult.textContent = '-';
+            differentTypeResult.textContent = '-';
         });
 
         function formatNumber(num) {
