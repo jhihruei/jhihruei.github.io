@@ -98,10 +98,9 @@
 </head>
 <body>
     <div class="container">
-        <label for="numeric-input">請輸入數字：</label>
-        <div class="input-wrapper">
-            <input type="number" id="numeric-input" inputmode="numeric" pattern="[0-9]*" placeholder="輸入數字..." />
-            <button class="clear-button" id="clear-button">x</button>
+        <div class="result">
+            <div class="result-label" style="font-size: 1rem;">不同屬性 Exp：</div>
+            <div class="result-value" id="different-type-result">-</div>
         </div>
 
         <div class="result">
@@ -109,9 +108,10 @@
             <div class="result-value" id="same-type-result">-</div>
         </div>
 
-        <div class="result">
-            <div class="result-label" style="font-size: 1rem;">不同屬性 Exp：</div>
-            <div class="result-value" id="different-type-result">-</div>
+        <label for="numeric-input">請輸入所需的 Exp：</label>
+        <div class="input-wrapper">
+            <input type="number" id="numeric-input" inputmode="numeric" pattern="[0-9]*" placeholder="輸入數字..." />
+            <button class="clear-button" id="clear-button">x</button>
         </div>
     </div>
 
