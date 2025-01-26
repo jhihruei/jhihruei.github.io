@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOS Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 1rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .result {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .result-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            .result-label {
+                font-size: 1rem;
+            }
+
+            .result-value {
+                font-size: 1.2rem;
+            }
+
+            input[type="number"] {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label for="numeric-input">請輸入數字：</label>
+        <input type="number" id="numeric-input" inputmode="numeric" placeholder="輸入數字..." />
+
+        <div class="result">
+            <div class="result-label">同屬性 Exp：</div>
+            <div class="result-value" id="same-type-result">-</div>
+        </div>
+
+        <div class="result">
+            <div class="result-label" style="font-size: 1rem;">不同屬性 Exp：</div>
+            <div class="result-value" id="different-type-result">-</div>
+        </div>
+    </div>
+
+    <script>
+        const EXTRA_EXP = 213;
+        const numericInput = document.getElementById('numeric-input');
+        const sameTypeResult = document.getElementById('same-type-result');
+        const differentTypeResult = document.getElementById('different-type-result');
+
+        numericInput.addEventListener('input', () => {
+            const inputValue = parseFloat(numericInput.value);
+
+            if (!isNaN(inputValue)) {
+                const sameTypeCalc = Math.ceil(inputValue / ((100 + EXTRA_EXP) * 1.5 / 100));
+                const differentTypeCalc = Math.ceil(inputValue / ((100 + EXTRA_EXP) / 100));
+
+                sameTypeResult.textContent = formatNumber(sameTypeCalc);
+                differentTypeResult.textContent = formatNumber(differentTypeCalc);
+            } else {
+                sameTypeResult.textContent = '-';
+                differentTypeResult.textContent = '-';
+            }
+        });
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+    </script>
+</body>
+</html>
