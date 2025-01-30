@@ -72,9 +72,20 @@
             color: #333;
         }
 
+        .exp-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .exp-input-wrapper input {
+            flex: 1;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 10px;
+                flex-direction: column-reverse;
             }
 
             .result-label {
@@ -98,34 +109,50 @@
 </head>
 <body>
     <div class="container">
-        <div class="result">
-            <div class="result-label" style="font-size: 1rem;">不同屬性 Exp：</div>
-            <div class="result-value" id="different-type-result">-</div>
-        </div>
-
-        <div class="result">
-            <div class="result-label">同屬性 Exp：</div>
-            <div class="result-value" id="same-type-result">-</div>
-        </div>
-
         <label for="numeric-input">請輸入所需的 Exp：</label>
         <div class="input-wrapper">
             <input type="number" id="numeric-input" inputmode="numeric" pattern="[0-9]*" placeholder="輸入數字..." />
             <button class="clear-button" id="clear-button">x</button>
         </div>
+        
+        <label for="extra-exp">強化經驗加成：</label>
+        <div class="exp-input-wrapper">
+            <input type="number" id="extra-exp" value="113" />
+            <span>%</span>
+        </div>
+        
+        <div class="result">
+            <div class="result-label">同屬性 Exp：</div>
+            <div class="result-value" id="same-type-result">-</div>
+        </div>
+        
+        <div class="result">
+            <div class="result-label" style="font-size: 1rem;">不同屬性 Exp：</div>
+            <div class="result-value" id="different-type-result">-</div>
+        </div>
     </div>
 
     <script>
-        const EXTRA_EXP = 113;
         const numericInput = document.getElementById('numeric-input');
+        const extraExpInput = document.getElementById('extra-exp');
         const clearButton = document.getElementById('clear-button');
         const sameTypeResult = document.getElementById('same-type-result');
         const differentTypeResult = document.getElementById('different-type-result');
 
-        numericInput.addEventListener('input', () => {
-            const inputValue = parseFloat(numericInput.value);
+        numericInput.addEventListener('input', updateResults);
+        extraExpInput.addEventListener('input', updateResults);
 
-            if (!isNaN(inputValue)) {
+        clearButton.addEventListener('click', () => {
+            numericInput.value = '';
+            sameTypeResult.textContent = '-';
+            differentTypeResult.textContent = '-';
+        });
+
+        function updateResults() {
+            const inputValue = parseFloat(numericInput.value);
+            const EXTRA_EXP = parseFloat(extraExpInput.value);
+
+            if (!isNaN(inputValue) && !isNaN(EXTRA_EXP)) {
                 const sameTypeCalc = Math.ceil(inputValue / ((100 + EXTRA_EXP) * 1.5 / 100));
                 const differentTypeCalc = Math.ceil(inputValue / ((100 + EXTRA_EXP) / 100));
 
@@ -135,13 +162,7 @@
                 sameTypeResult.textContent = '-';
                 differentTypeResult.textContent = '-';
             }
-        });
-
-        clearButton.addEventListener('click', () => {
-            numericInput.value = '';
-            sameTypeResult.textContent = '-';
-            differentTypeResult.textContent = '-';
-        });
+        }
 
         function formatNumber(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
